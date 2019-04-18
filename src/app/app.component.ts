@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Observable, Subject, ReplaySubject, BehaviorSubject } from 'rxjs';
+import { Observable, Subject, ReplaySubject, BehaviorSubject,of } from 'rxjs';
 
 @Component({
   selector: 'my-app',
@@ -40,6 +40,9 @@ export class AppComponent implements OnInit {
 
     observable.subscribe(observer);
 
+    /**Observables use of*/ 
+    const observable2 = of('of 1','of 2'); 
+    observable2.subscribe(observer)
 
     /**Subject */
     const subject = new Subject();

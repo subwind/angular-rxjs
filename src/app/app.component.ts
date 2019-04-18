@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Observable, Subject, ReplaySubject ,BehaviorSubject } from 'rxjs';
+import { Observable, Subject, ReplaySubject, BehaviorSubject } from 'rxjs';
 
 @Component({
   selector: 'my-app',
@@ -14,11 +14,32 @@ export class AppComponent implements OnInit {
   ngOnInit() {
     this.name = 'Angular';
     /**Observables */
+    //Observable.create() and new Observable() essentially do the same thing.
     const observable = new Observable(observer => {
+      observer.next('hello from Observable!!----first');
       setTimeout(() => observer.next('hello from Observable!'), 1000);
+      observer.next('hello from Observable!!----second');
+      observer.complete()
     });
 
-    observable.subscribe(v => console.log(v));
+    /** method - 1 */
+    //observable.subscribe(v => console.log(v),error=>console.log(error),()=>console.log('Observable complete'));
+
+    /** method - 2 */
+    let observer = {
+      next: function (value) {
+        console.log(value);
+      },
+      error: function (error) {
+        console.log(error)
+      },
+      complete: function () {
+        console.log('Observable complete')
+      }
+    }
+
+    observable.subscribe(observer);
+
 
     /**Subject */
     const subject = new Subject();

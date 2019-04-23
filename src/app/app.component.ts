@@ -12,7 +12,7 @@ export class AppComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    this.name = 'Angular';
+    this.name = 'Angular Rxjs';
     /**Observables */
     //Observable.create() and new Observable() essentially do the same thing.
     const observable = new Observable(observer => {
@@ -28,6 +28,10 @@ export class AppComponent implements OnInit {
     /** method - 2 */
     let observer = {
       next: function (value) {
+        let $div=document.createElement('div');
+        let $elm=document.querySelector('#observable');
+        $div.innerHTML=value;
+        $elm.appendChild($div);     
         console.log(value);
       },
       error: function (error) {

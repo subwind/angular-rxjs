@@ -14,6 +14,21 @@ export class AppComponent implements OnInit {
   ngOnInit() {
     this.name = 'Angular Rxjs';
     /**Observables */
+    this.useObservable();
+
+    /**Subject */
+    this.useSubject();
+
+    /**ReplaySubject  */
+    this.useReplaySubject();
+
+    /**BehaviorSubject*/
+    this.useBehaviorSubject();
+
+  }
+
+  /** 利用Observable */
+  public useObservable():void{
     //Observable.create() and new Observable() essentially do the same thing.
     const observable = new Observable(observer => {
       observer.next('hello from Observable!!----first');
@@ -24,20 +39,16 @@ export class AppComponent implements OnInit {
 
     /** method - 1 */
     //observable.subscribe(v => console.log(v),error=>console.log(error),()=>console.log('Observable complete'));
-
-    /** method - 2 */
     let observer = {
-      next: function (value) {
-        let $div=document.createElement('div');
-        let $elm=document.querySelector('#observable');
-        $div.innerHTML=value;
-        $elm.appendChild($div);     
+      next:  (value) => {
+        this.createDomElm('div','#observable',value);     
         console.log(value);
       },
-      error: function (error) {
+      error:  (error) => {
         console.log(error)
       },
-      complete: function () {
+      complete:  () => {
+        this.createDomElm('div','#observable','Observable complete!!</br></br>');  
         console.log('Observable complete')
       }
     }
@@ -45,35 +56,55 @@ export class AppComponent implements OnInit {
     observable.subscribe(observer);
 
     /**Observables use of*/ 
-    const observable2 = of('of 1','of 2'); 
+    const observable2 = of('Observables use of 1','Observables use of 2'); 
     observable2.subscribe(observer)
 
-    /**Subject */
+  }
+
+  /** 利用Subject */
+  public useSubject():void{
     const subject = new Subject();
 
     subject.next('missed message from Subject');
 
-    subject.subscribe(v => console.log(v));
-
+    subject.subscribe(v => {
+      this.createDomElm('div','#subject',v.toString());
+      console.log(v)
+    });
     subject.next('hello from subject!');
+  }
 
-
-    /**ReplaySubject  */
+  /** 利用ReplaySubject*/
+  public useReplaySubject():void{
     const replaySubject = new ReplaySubject();
 
     replaySubject.next('hello from ReplaySubject!');
 
     replaySubject.next('hello from second event from ReplaySubject!');
 
-    replaySubject.subscribe(v => console.log(v));
+    replaySubject.subscribe(v => {
+      this.createDomElm('div','#replaySubject',v.toString());
+      console.log(v);
+    });
+  }
 
-    /**BehaviorSubject*/
+  /** 利用BehaviorSubject*/
+  public useBehaviorSubject():void{
     const behaviorSubject = new BehaviorSubject('hello initial value from BehaviorSubject');
 
-    behaviorSubject.subscribe(v => console.log(v));
+    behaviorSubject.subscribe(v => {
+      this.createDomElm('div','#behaviorSubject',v.toString());
+      console.log(v);
+    });
 
     behaviorSubject.next('hello again from BehaviorSubject');
+  }
 
+  public createDomElm(tag:string,target:string,value:string):void{
+    let $div= document.createElement(tag);
+    let $elm = document.querySelector(target);
+    $div.innerHTML=value;
+    $elm.appendChild($div);    
   }
 
 }

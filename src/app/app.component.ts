@@ -32,7 +32,7 @@ export class AppComponent implements OnInit {
     //Observable.create() and new Observable() essentially do the same thing.
     const observable = new Observable(observer => {
       observer.next('hello from Observable!!----first');
-      setTimeout(() => observer.next('hello from Observable!'), 1000);
+      setTimeout(() => observer.next('hello from Observable!'), 100);
       observer.next('hello from Observable!!----second');
       observer.complete()
     });

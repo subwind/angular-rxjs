@@ -1,3 +1,35 @@
-<p>
-  observable works!
-</p>
+<h2>Observable</h2>
+<pre>
+   1.const observable = new Observable()
+   2.const observable2 = of('Observables use of 1','Observables use of 2');
+
+   P.S. Observable.create() and new Observable() essentially do the same thing.
+</pre>
+<div id="observable"></div>
+
+<h2>Subject</h2>
+<pre>
+  const subject = new Subject();
+  subject.next('missed message from Subject');
+  subject.subscribe();
+  subject.next('hello from subject!');
+</pre>
+<div id="subject"></div>
+
+<h3>ReplaySubject</h3>
+<pre>
+  const replaySubject = new ReplaySubject();
+  replaySubject.next('hello from ReplaySubject!');
+  replaySubject.next('hello from second event from ReplaySubject!');
+  replaySubject.subscribe();
+</pre>
+<div id="replaySubject"></div>
+
+<h3>BehaviorSubject</h3>
+<pre>
+  const behaviorSubject = new BehaviorSubject('hello initial value from BehaviorSubject');
+  behaviorSubject.subscribe();
+  behaviorSubject.next('hello again from BehaviorSubject');
+</pre>
+<pre></pre>
+<div id="behaviorSubject"></div>

@@ -100,6 +100,7 @@ export class AppComponent implements OnInit {
     behaviorSubject.next('hello again from BehaviorSubject');
   }
 
+  /** 建立DOM元素 */
   public createDomElm(tag:string,target:string,value:string):void{
     let $div= document.createElement(tag);
     let $elm = document.querySelector(target);

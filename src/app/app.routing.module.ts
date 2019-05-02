@@ -1,23 +1,17 @@
-import { RouterModule } from '@angular/router';
 import { NgModule } from '@angular/core';
-import { AppComponent} from './app.component';
-import { AppObservableComponent} from './View/Rxjs/Observable/app.observable.component';
+import { Routes, RouterModule } from '@angular/router';
+import { ObservableComponent } from './View/Rxjs/Observable/observable.component'
+
+const routes: Routes = [
+  { path: 'observable', component: ObservableComponent },
+  { path: '', redirectTo: '', pathMatch: 'full'}
+];
 
 @NgModule({
-  declarations: [ 
-    AppComponent,AppObservableComponent
-  ],
-  imports: [
-    RouterModule.forRoot([
-      { path: 'index', component: AppComponent },
-      { path:'observable',component:AppObservableComponent},
-      { path: '**', redirectTo: 'index' }
-    ])
-  ],
-  exports: [
-    RouterModule,
-  ],
-  providers: [],
+  declarations: [],
+  imports: [RouterModule.forRoot(routes)],
+  exports: [RouterModule],
+  providers: []
 
 })
-export class AppRoutingModule {}
+export class AppRoutingModule { }

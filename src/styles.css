@@ -1,1 +1,13 @@
 /* Add application styles & imports to this file! */
+html{
+  font-size: 12px;
+}
+
+code.jsType{
+  background: black;
+  color: white;
+}
+
+.jsType .jsKey{
+      color: #c26230;
+}

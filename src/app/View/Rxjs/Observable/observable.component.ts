@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable, Subject, ReplaySubject, BehaviorSubject,of } from 'rxjs';
+import { take, map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-observable',
@@ -56,6 +57,12 @@ export class ObservableComponent implements OnInit {
     /**Observables use of*/ 
     const observable2 = of('Observables use of 1','Observables use of 2'); 
     observable2.subscribe(observer)
+
+    of(1,2,3,4)
+    .pipe(
+      take(2),
+      map(val => val + 2)
+    ).subscribe((value)=>{console.log(value)});
 
   }
 

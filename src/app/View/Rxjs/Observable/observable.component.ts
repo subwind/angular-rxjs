@@ -1,6 +1,6 @@
 import { Component, OnInit,AfterViewInit,ViewChild, ElementRef  } from '@angular/core';
-import { Observable, Subject, ReplaySubject, BehaviorSubject,of,interval,timer,fromEvent  } from 'rxjs';
-import { take,takeUntil, map } from 'rxjs/operators';
+import { Observable, Subject, ReplaySubject, BehaviorSubject,of,interval,timer,fromEvent,from  } from 'rxjs';
+import { take,takeUntil, map,zip } from 'rxjs/operators';
 
 @Component({
   selector: 'app-observable',
@@ -73,7 +73,6 @@ export class ObservableComponent implements OnInit {
       take(2),
       map(val => val + 2)
     ).subscribe((value)=>{console.log(value)});
-
   }
 
   /** 利用Subject */
@@ -127,6 +126,11 @@ export class ObservableComponent implements OnInit {
       console.log(newX);
     })
 
+  }
+
+  /**利用from 和 zip 組成一個動態產生值的功能 */
+  public useZip():void{
+    from([1,2,3,4]).pipe(zip(interval(500),(x,y)=>x)).subscribe((value)=>{console.log('x',value)});
   }
 
   /** 建立DOM元素 */

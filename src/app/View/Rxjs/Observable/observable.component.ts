@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-import { Observable, Subject, ReplaySubject, BehaviorSubject,of } from 'rxjs';
-import { take, map } from 'rxjs/operators';
+import { Component, OnInit,AfterViewInit,ViewChild, ElementRef  } from '@angular/core';
+import { Observable, Subject, ReplaySubject, BehaviorSubject,of,interval,timer,fromEvent  } from 'rxjs';
+import { take,takeUntil, map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-observable',
@@ -8,6 +8,8 @@ import { take, map } from 'rxjs/operators';
   styleUrls: ['./observable.component.css']
 })
 export class ObservableComponent implements OnInit {
+
+  @ViewChild('btnTest') button:ElementRef;
 
   constructor() { }
 
@@ -23,6 +25,14 @@ export class ObservableComponent implements OnInit {
 
     /**BehaviorSubject*/
     this.useBehaviorSubject();
+
+    /**Use Interval */
+    this.useInterval();
+  }
+
+  ngAfterViewInit(){
+    let buttonStream$ = fromEvent(this.button.nativeElement, 'click')
+        .subscribe(res => console.log(res));
   }
 
 
@@ -37,7 +47,7 @@ export class ObservableComponent implements OnInit {
     });
 
     /** method - 1 */
-    //observable.subscribe(v => console.log(v),error=>console.log(error),()=>console.log('Observable complete'));
+    //observable.subscribe(v => console.log(v),error=>console.log(error),()=>console.log('Observable complete?'));
     let observer = {
       next:  (value) => {
         this.createDomElm('div','#observable',value);     
@@ -103,6 +113,20 @@ export class ObservableComponent implements OnInit {
     });
 
     behaviorSubject.next('hello again from BehaviorSubject');
+  }
+
+  /**Observable.interval 測試 */
+  public useInterval():void{
+    let source = interval(1000);
+    /**Use  takeUntil & timer*/
+    source.pipe(takeUntil(timer(5000)),map(x=>x+1)).subscribe(newX=>{
+      console.log(newX);
+    })
+    /** Use take*/
+    source.pipe(take(3),map(x=>x+1)).subscribe(newX=>{
+      console.log(newX);
+    })
+
   }
 
   /** 建立DOM元素 */

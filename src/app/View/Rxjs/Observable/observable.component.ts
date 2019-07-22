@@ -1,5 +1,5 @@
 import { Component, OnInit,AfterViewInit,ViewChild, ElementRef  } from '@angular/core';
-import { Observable, Subject, ReplaySubject, BehaviorSubject,of,interval,timer,fromEvent,from  } from 'rxjs';
+import { Observable, Subject, ReplaySubject, BehaviorSubject,AsyncSubject,of,interval,timer,fromEvent,from  } from 'rxjs';
 import { take,takeUntil, map,zip } from 'rxjs/operators';
 
 @Component({
@@ -25,6 +25,9 @@ export class ObservableComponent implements OnInit {
 
     /**BehaviorSubject*/
     this.useBehaviorSubject();
+
+    /**AsyncSubject  */
+    this.useAsyncSubject();
 
     /**Use Interval */
     this.useInterval();
@@ -112,6 +115,24 @@ export class ObservableComponent implements OnInit {
     });
 
     behaviorSubject.next('hello again from BehaviorSubject');
+  }
+
+  /**利用AsyncSubject */
+  public useAsyncSubject():void{
+    const asyncSubject = new AsyncSubject();
+
+    asyncSubject.next('hello initial value from AsyncSubject');
+    asyncSubject.next('hello 1st value from AsyncSubject'); 
+
+    asyncSubject.subscribe(v=>{
+      this.createDomElm('div','#asyncSubject',v.toString());
+      console.log(v);
+    });
+
+    asyncSubject.next('hello 2nd value from AsyncSubject'); 
+    asyncSubject.complete();
+
+     
   }
 
   /**Observable.interval 測試 */

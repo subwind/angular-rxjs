@@ -22,6 +22,7 @@
 <div id="subject"></div>
 
 <h3>ReplaySubject</h3>
+<div>會記錄所有呼叫 next() 變更的資料，在被 subscribe() 時，重新播放所有紀錄(可設定紀錄最近的 N 筆)</div>
 <pre>
   const replaySubject = new ReplaySubject();
   replaySubject.next('hello from ReplaySubject!');
@@ -31,6 +32,7 @@
 <div id="replaySubject"></div>
 
 <h3>BehaviorSubject</h3>
+<div>可以在資料被訂閱前，給予初始資料，任何 next 發生前執行 subscribe()都會得到初始資料</div>
 <pre>
   const behaviorSubject = new BehaviorSubject('hello initial value from BehaviorSubject');
   behaviorSubject.subscribe();
@@ -40,6 +42,7 @@
 <div id="behaviorSubject"></div>
 
 <h3>AsyncSubject</h3>
+<div>他只有在 complete() 方法被呼叫時，才能訂閱到「最後一次 next() 的資料」</div>
 <pre>
   const asyncSubject = new AsyncSubject();
   asyncSubject.next('hello initial value from AsyncSubject');

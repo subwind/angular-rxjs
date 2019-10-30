@@ -1,6 +1,6 @@
 import { Component, OnInit,AfterViewInit,ViewChild, ElementRef  } from '@angular/core';
-import { Observable, Subject, ReplaySubject, BehaviorSubject,AsyncSubject,of,interval,timer,fromEvent,from  } from 'rxjs';
-import { take,takeUntil, map,zip } from 'rxjs/operators';
+import { Observable, Subject, ReplaySubject, BehaviorSubject,AsyncSubject,of,interval,timer,fromEvent,from,combineLatest   } from 'rxjs';
+import { take,takeUntil, map,zip,mapTo } from 'rxjs/operators';
 
 @Component({
   selector: 'app-observable',
@@ -31,6 +31,9 @@ export class ObservableComponent implements OnInit {
 
     /**Use Interval */
     this.useInterval();
+
+    /**use combineLatest */
+    this.useCombineLatest();
   }
 
   ngAfterViewInit(){
@@ -152,6 +155,19 @@ export class ObservableComponent implements OnInit {
   /**利用from 和 zip 組成一個動態產生值的功能 */
   public useZip():void{
     from([1,2,3,4]).pipe(zip(interval(500),(x,y)=>x)).subscribe((value)=>{console.log('x',value)});
+  }
+
+  /**利用combineLatest 測試 */
+  public useCombineLatest():void{
+    console.log('useCombineLatest');
+    let source = interval(2000).pipe(mapTo(5));
+    let source2 = interval(4000).pipe(mapTo(10));
+
+    combineLatest(source,source2).pipe(map(([s1,s2])=>{
+      return {s1:s1,s2:s2}
+    })).subscribe((a)=>{
+      console.log(a)
+    })
   }
 
   /** 建立DOM元素 */

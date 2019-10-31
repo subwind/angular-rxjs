@@ -1,6 +1,6 @@
 import { Component, OnInit,AfterViewInit,ViewChild, ElementRef  } from '@angular/core';
 import { Observable, Subject, ReplaySubject, BehaviorSubject,AsyncSubject,of,interval,timer,fromEvent,from,combineLatest   } from 'rxjs';
-import { take,takeUntil, map,zip,mapTo } from 'rxjs/operators';
+import { take,takeUntil, map,zip,mapTo,startWith  } from 'rxjs/operators';
 
 @Component({
   selector: 'app-observable',
@@ -33,7 +33,10 @@ export class ObservableComponent implements OnInit {
     this.useInterval();
 
     /**use combineLatest */
-    this.useCombineLatest();
+    //this.useCombineLatest();
+    /**use startWith */
+    this.useStartWith();
+
   }
 
   ngAfterViewInit(){
@@ -164,9 +167,17 @@ export class ObservableComponent implements OnInit {
     let source2 = interval(4000).pipe(mapTo(10));
 
     combineLatest(source,source2).pipe(map(([s1,s2])=>{
-      return {s1:s1,s2:s2}
+      return {s2:s1,s3:s2}
     })).subscribe((a)=>{
-      console.log(a)
+      //console.log(a)
+    })
+  }
+
+  /**利用startWith */
+  public useStartWith():void{
+    let source = of(1,2,3);
+    source.pipe(startWith(0)).subscribe(val=>{
+      console.log(val,'startWith');
     })
   }
 

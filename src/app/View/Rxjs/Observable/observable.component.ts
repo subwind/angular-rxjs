@@ -1,6 +1,6 @@
 import { Component, OnInit,AfterViewInit,ViewChild, ElementRef  } from '@angular/core';
-import { Observable, Subject, ReplaySubject, BehaviorSubject,AsyncSubject,of,interval,timer,fromEvent,from,combineLatest   } from 'rxjs';
-import { take,takeUntil, map,zip,mapTo,startWith  } from 'rxjs/operators';
+import { Observable, Subject, ReplaySubject, BehaviorSubject,AsyncSubject,of,interval,timer,fromEvent,from,combineLatest,forkJoin } from 'rxjs';
+import { take,takeUntil, map,zip,mapTo,startWith,delay,debounceTime,switchMap  } from 'rxjs/operators';
 
 @Component({
   selector: 'app-observable',
@@ -10,6 +10,11 @@ import { take,takeUntil, map,zip,mapTo,startWith  } from 'rxjs/operators';
 export class ObservableComponent implements OnInit {
 
   @ViewChild('btnTest') button:ElementRef;
+
+  @ViewChild('dt') dtInput:ElementRef;
+
+  public dtValue:string  = "";
+
 
   constructor() { }
 
@@ -35,13 +40,22 @@ export class ObservableComponent implements OnInit {
     /**use combineLatest */
     //this.useCombineLatest();
     /**use startWith */
-    this.useStartWith();
+    // this.useStartWith();
+
+    /**use forkJoin */
+    this.useForkJoin();
+
+   
+
 
   }
 
   ngAfterViewInit(){
     let buttonStream$ = fromEvent(this.button.nativeElement, 'click')
         .subscribe(res => console.log(res));
+
+         this.useDebounceTime();
+
   }
 
 
@@ -146,11 +160,11 @@ export class ObservableComponent implements OnInit {
     let source = interval(1000);
     /**Use  takeUntil & timer*/
     source.pipe(takeUntil(timer(5000)),map(x=>x+1)).subscribe(newX=>{
-      console.log(newX);
+      console.log(newX,'takeUnit');
     })
     /** Use take*/
     source.pipe(take(3),map(x=>x+1)).subscribe(newX=>{
-      console.log(newX);
+      console.log(newX,'take');
     })
 
   }
@@ -180,6 +194,44 @@ export class ObservableComponent implements OnInit {
       console.log(val,'startWith');
     })
   }
+
+  /*利用forkJoin*/
+  public useForkJoin():void{
+    const myPromise = val =>
+      new Promise(resolve =>
+      setTimeout(() => resolve(`Promise Resolved: ${val}`), 5000)
+    );
+
+    /*
+    当所有 observables 完成时，将每个 observable 
+    的最新值作为数组发出
+    */
+    const example = forkJoin(
+      // 立即发出 'Hello'
+      of('Hello'),
+      // 1秒后发出 'World'
+      of('World').pipe(delay(1000)),
+      // 1秒后发出0
+      interval(1000).pipe(take(1)),
+      // 以1秒的时间间隔发出0和1
+      interval(1000).pipe(take(2)),
+      // 5秒后解析 'Promise Resolved' 的 promise
+      myPromise('RESULT')
+    );
+    //输出: ["Hello", "World", 0, 1, "Promise Resolved: RESULT"]
+    const subscribe = example.subscribe(val => console.log(val));
+
+  }
+
+  /**利用 debounceTime */
+  public useDebounceTime():void{
+     fromEvent(this.dtInput.nativeElement,'input').pipe(debounceTime(3000),switchMap((val) => {
+       ㄋㄛ
+     }
+    ))
+    //fromEvent(this.dtInput.nativeElement,'input').subscribe((val)=>{console.log(val['data'])})
+  }
+
 
   /** 建立DOM元素 */
   public createDomElm(tag:string,target:string,value:string):void{

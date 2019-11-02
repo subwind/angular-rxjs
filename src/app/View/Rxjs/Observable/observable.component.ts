@@ -225,10 +225,8 @@ export class ObservableComponent implements OnInit {
 
   /**利用 debounceTime */
   public useDebounceTime():void{
-     fromEvent(this.dtInput.nativeElement,'input').pipe(debounceTime(3000),switchMap((val) => {
-       ㄋㄛ
-     }
-    ))
+     let input = document.getElementById('dt')
+     fromEvent(input,'input').pipe(map(i=>i.currentTarget['value'] ),debounceTime(1000)).subscribe(val=>{this.dtValue = val});
     //fromEvent(this.dtInput.nativeElement,'input').subscribe((val)=>{console.log(val['data'])})
   }
 

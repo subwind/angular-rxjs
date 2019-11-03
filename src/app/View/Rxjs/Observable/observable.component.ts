@@ -1,6 +1,6 @@
 import { Component, OnInit,AfterViewInit,ViewChild, ElementRef  } from '@angular/core';
 import { Observable, Subject, ReplaySubject, BehaviorSubject,AsyncSubject,of,interval,timer,fromEvent,from,combineLatest,forkJoin } from 'rxjs';
-import { take,takeUntil, map,zip,mapTo,startWith,delay,debounceTime,switchMap  } from 'rxjs/operators';
+import { take,takeUntil, map,zip,mapTo,startWith,delay,debounceTime,switchMap,distinctUntilChanged,catchError   } from 'rxjs/operators';
 
 @Component({
   selector: 'app-observable',
@@ -226,7 +226,8 @@ export class ObservableComponent implements OnInit {
   /**利用 debounceTime */
   public useDebounceTime():void{
      let input = document.getElementById('dt')
-     fromEvent(input,'input').pipe(map(i=>i.currentTarget['value'] ),debounceTime(1000)).subscribe(val=>{this.dtValue = val});
+     //fromEvent(input,'input').pipe(map(i=>i.currentTarget['value'] ),debounceTime(1000)).subscribe(val=>{this.dtValue = val});
+     fromEvent(input,'input').pipe(switchMap(i=>i.currentTarget['value'] ),distinctUntilChanged()).subscribe((val:string)=>{this.dtValue = val});
     //fromEvent(this.dtInput.nativeElement,'input').subscribe((val)=>{console.log(val['data'])})
   }
 

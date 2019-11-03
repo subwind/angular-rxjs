@@ -13,7 +13,11 @@ export class ObservableComponent implements OnInit {
 
   @ViewChild('dt') dtInput:ElementRef;
 
+  @ViewChild('duc') ducInput:ElementRef;
+
   public dtValue:string  = "";
+
+  public ducValue:string = "";
 
 
   constructor() { }
@@ -55,6 +59,8 @@ export class ObservableComponent implements OnInit {
         .subscribe(res => console.log(res));
 
          this.useDebounceTime();
+
+         this.distinctUntilChanged();
 
   }
 
@@ -226,9 +232,17 @@ export class ObservableComponent implements OnInit {
   /**利用 debounceTime */
   public useDebounceTime():void{
      let input = document.getElementById('dt')
-     //fromEvent(input,'input').pipe(map(i=>i.currentTarget['value'] ),debounceTime(1000)).subscribe(val=>{this.dtValue = val});
-     fromEvent(input,'input').pipe(switchMap(i=>i.currentTarget['value'] ),distinctUntilChanged()).subscribe((val:string)=>{this.dtValue = val});
+     fromEvent(input,'input').pipe(map(i=>i.currentTarget['value'] ),debounceTime(1000)).subscribe(val=>{this.dtValue = val});
+     
     //fromEvent(this.dtInput.nativeElement,'input').subscribe((val)=>{console.log(val['data'])})
+  }
+
+  /**利用distinctUntilChanged */
+  public distinctUntilChanged():void{
+    let input = document.getElementById('duc')
+    fromEvent(input,'input').pipe(switchMap(i=>i.currentTarget['value'] ),distinctUntilChanged()).subscribe((val:string)=>{this.ducValue = val},(error) => {
+        console.log('error', error);
+    });
   }
 
 

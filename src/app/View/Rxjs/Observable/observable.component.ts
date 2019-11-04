@@ -1,6 +1,6 @@
 import { Component, OnInit,AfterViewInit,ViewChild, ElementRef  } from '@angular/core';
 import { Observable, Subject, ReplaySubject, BehaviorSubject,AsyncSubject,of,interval,timer,fromEvent,from,combineLatest,forkJoin } from 'rxjs';
-import { take,takeUntil, map,zip,mapTo,startWith,delay,debounceTime,switchMap,distinctUntilChanged,catchError   } from 'rxjs/operators';
+import { take,takeUntil, map,zip,mapTo,startWith,delay,debounceTime,switchMap,distinctUntilChanged,catchError,filter   } from 'rxjs/operators';
 
 @Component({
   selector: 'app-observable',
@@ -49,8 +49,7 @@ export class ObservableComponent implements OnInit {
     /**use forkJoin */
     this.useForkJoin();
 
-   
-
+    this.useFilter();
 
   }
 
@@ -240,9 +239,14 @@ export class ObservableComponent implements OnInit {
   /**利用distinctUntilChanged */
   public distinctUntilChanged():void{
     let input = document.getElementById('duc')
-    fromEvent(input,'input').pipe(switchMap(i=>i.currentTarget['value'] ),distinctUntilChanged()).subscribe((val:string)=>{this.ducValue = val},(error) => {
-        console.log('error', error);
-    });
+     fromEvent(input,'input').pipe(switchMap(i=>i.currentTarget['value'] ),distinctUntilChanged()).subscribe((val:string)=>{this.ducValue = val},(error) => {
+         console.log('error', error);
+     });
+  }
+
+  /**利用filter */
+  public useFilter():void{
+    from([1, 2, 3, 4, 5]).pipe(filter(number=>number>3)).subscribe(val=> console.log('filter='+val));
   }
 
 
